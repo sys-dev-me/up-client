@@ -1,0 +1,5 @@
+{
+	"ServerFQDN":"probe.newton.life",
+	"ServerPort":3333,
+	"LogFile": "client.log"
+}
