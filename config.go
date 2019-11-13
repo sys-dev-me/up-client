@@ -2,6 +2,7 @@ package main
 
 import "os"
 import "encoding/json"
+import "path/filepath"
 import "fmt"
 
 func (this *Config) Load() *Config {
