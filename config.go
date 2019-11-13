@@ -6,8 +6,8 @@ import "fmt"
 
 func (this *Config) Load() *Config {
 
-        //dir, _ := filepath.Abs ( filepath.Dir ( os.Args[0] ) )
-        configFile := ".settings"
+        dir, _ := filepath.Abs ( filepath.Dir ( os.Args[0] ) )
+        configFile := dir + "/.settings"
         if _, err := os.Stat ( configFile ); os.IsNotExist ( err ) {
 
                 fmt.Printf ( "Unable to read config: %v\n", err  )
