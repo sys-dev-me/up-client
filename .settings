@@ -1,5 +1,14 @@
 {
 	"ServerFQDN":"probe.newton.life",
 	"ServerPort":3333,
-	"LogFile": "client.log"
+	"LogFile": "client.log",
+	"Services":[
+		{
+			"ServiceName":"ldap",
+			"ServiceLocation":"/etc/openldap",
+			"ServiceEnabled":true,
+			"ServicePort": 389,
+			"Serviceproto":"tcp"
+		}
+	]
 }

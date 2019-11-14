@@ -10,10 +10,14 @@ import "strings"
 
 
 func main () {
-	config := new(Config)
-	config.Load()
 
-	logFile, err := os.OpenFile(config.getLogFileName(), os.O_RDWR | os.O_CREATE | os.O_APPEND, 0666)
+	hostname, _ := os.Hostname()
+
+	app := new( Application )
+	app.setupModules()
+	app.Config.Load( app )
+
+	logFile, err := os.OpenFile(app.Config.getLogFileName(), os.O_RDWR | os.O_CREATE | os.O_APPEND, 0666)
 
 	if err != nil {
 		fmt.Printf ( "Something went wrong: %v\n", err )
@@ -22,28 +26,28 @@ func main () {
 	defer logFile.Close()
 	log.SetOutput ( logFile )
 
-	a := new(Greeting)
-	hostname, _ := os.Hostname()
-	a.HostName = hostname
+	app.Request.HostName = hostname
 
-	connector, err := net.Dial("tcp", strings.Join ([]string{config.ServerFQDN, strconv.Itoa(config.ServerPort) }, ":" ) )
+	connector, err := net.Dial("tcp", strings.Join ([]string{app.Config.ServerFQDN, strconv.Itoa(app.Config.ServerPort) }, ":" ) )
 	if err != nil {
 		fmt.Printf ( "Unable to connect to server: %v\n", err )
 	}
 	defer connector.Close()
 
-	log.Println ( "Connected to: ", strings.Join ([]string{config.ServerFQDN, strconv.Itoa(config.ServerPort) }, ":" ))
+	log.Println ( "Connected to: ", strings.Join ([]string{app.Config.ServerFQDN, strconv.Itoa(app.Config.ServerPort) }, ":" ))
 
-	a.HostAddress = connector.LocalAddr().(*net.TCPAddr)
-	a.HostToken = make([]byte, 5, 5)
-	a.MessageType = "Some type of mesage"
-	a.Message = new(Message)
-	a.Message.Body = "Some specific message from client side"
-	fmt.Printf ( "Connect from interface: %v\n", a.HostAddress.IP )
+	app.Request.HostAddress = connector.LocalAddr().(*net.TCPAddr)
+	app.Request.HostToken = make([]byte, 5, 5)
+	app.Request.MessageType = "Some type of mesage"
+	app.Request.Message = new(Message)
+	app.Request.Message.Body = "Some specific message from client side"
+	fmt.Printf ( "Connect from interface: %v\n", app.Request.HostAddress.IP )
 
 	// write json to connector
-	jsonBytes, err := json.Marshal( a )
-	_, err = connector.Write(jsonBytes)
+	jsonBytes, err := json.Marshal( app.Request )
+	_, err = connector.Write( jsonBytes )
 
-	fmt.Printf ( "We send message: %v\n", a )
+	//fmt.Printf ( "We send message: %v\n", app.Request )
+	app.Config.Print()
+
 }
