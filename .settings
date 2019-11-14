@@ -5,6 +5,7 @@
 	"Services":[
 		{
 			"ServiceName":"ldap",
+			"ServiceNetwork":true,
 			"ServiceLocation":"/etc/openldap",
 			"ServiceEnabled":true,
 			"ServicePort": 389,

@@ -24,6 +24,7 @@ type Config struct {
 }
 type Service struct {
 	ServiceName			string
+	ServiceNetwork		bool
 	ServiceLocation	string
 	ServiceEnabled		bool
 	ServicePort			int

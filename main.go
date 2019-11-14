@@ -48,6 +48,8 @@ func main () {
 	_, err = connector.Write( jsonBytes )
 
 	//fmt.Printf ( "We send message: %v\n", app.Request )
-	app.Config.Print()
+	//app.Config.Print()
+	
+	app.runModules ()
 
 }

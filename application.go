@@ -8,7 +8,7 @@ func (this *Application ) setupModules () {
 
 	this.SupportedModules = make(map[string]Module, 0)
 	this.SupportedModules["ldap"] = Module{Name:"ldap"}
-	this.SupportedModules["docker"] = Module{Name:"docker"}
+//	this.SupportedModules["docker"] = Module{Name:"docker"}
 
 }
 
@@ -25,4 +25,13 @@ func (this *Application) isModuleSupported ( name string ) (interface{}, bool) {
 
 	return Module{}, false
 
+}
+
+func (this *Application) runModules () {
+	for idx, v := range this.SupportedModules {
+
+		fmt.Printf ( "Read & start module: %s (%v)\n", idx, v.Name )
+		v.isEnabled()	
+
+	}
 }
