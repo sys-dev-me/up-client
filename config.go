@@ -2,15 +2,13 @@ package main
 
 import "os"
 import "encoding/json"
+//import "path/filepath"
 import "fmt"
 import "strings"
 
 func (this *Config) Load( app *Application ) *Config {
 
 	this.Application = app
-
-	//dir, _ := filepath.Abs ( filepath.Dir ( os.Args[0] ) )
-
 
 	if len ( os.Args ) < 2 { 
 		fmt.Printf ( "Usage: up-server PATH_TO/CONFIGURATION_FILE\n" )
