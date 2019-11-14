@@ -1,9 +1,12 @@
 package main
 
-import "fmt"
 
-func (this *Module) isEnabled () {
-	
-	fmt.Printf ( "Check module: is enabled: %v\n", this.Config.ServiceEnabled  )
+func (this *Module) isEnabled () bool{
+	 
+	return this.Config.ServiceEnabled 
 
+}
+
+func (this *Module) isNetwork () bool {
+	return this.Config.ServiceNetwork
 }

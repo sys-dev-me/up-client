@@ -31,7 +31,12 @@ func (this *Application) runModules () {
 	for idx, v := range this.SupportedModules {
 
 		fmt.Printf ( "Read & start module: %s (%v)\n", idx, v.Name )
-		v.isEnabled()	
+		if v.isEnabled() {
+			fmt.Printf ( "Service %s enabled\n", v.Name )
+			if v.isNetwork () {
+				fmt.Printf ( "Service %s supported network access\n", v.Name )
+				}
+			}
 
 	}
 }
