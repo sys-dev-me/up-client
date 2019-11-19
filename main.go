@@ -11,9 +11,13 @@ import "strings"
 
 func main () {
 
+	// get hostname
 	hostname, _ := os.Hostname()
 
+	//create application environment
 	app := new( Application )
+
+	//setup supported modules
 	app.setupModules()
 	app.Config.Load( app )
 

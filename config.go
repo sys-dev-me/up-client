@@ -11,7 +11,7 @@ func (this *Config) Load( app *Application ) *Config {
 	this.Application = app
 
 	if len ( os.Args ) < 2 { 
-		fmt.Printf ( "Usage: up-server PATH_TO/CONFIGURATION_FILE\n" )
+		fmt.Printf ( "Usage: up-client PATH_TO/CONFIGURATION_FILE\n" )
 		os.Exit( 1 )
 	}
 
