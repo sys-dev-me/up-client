@@ -17,8 +17,6 @@ type Config struct {
 	ServerFQDN		string
 	ServerPort		int
 	LogFile        string
-	Services			[]Service
-	Modules			[]Module
 	Application		*Application
 	
 }
@@ -30,13 +28,21 @@ type Service struct {
 	ServicePort			int
 	ServiceProto		string
 }
+
 type Greeting struct {
 	HostName    string
-	HostAddress *net.TCPAddr
+	HostGateway	string
+	ContainerAddress *net.TCPAddr
+	HostAddress string
 	HostToken   []byte
 	MessageType string
 	Message     *Message
+	Received		int64
+	Memory			RAM	
+	Version			float64
 }
+
+
 type Message struct {
 	Body  string
 }

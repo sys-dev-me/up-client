@@ -3,7 +3,7 @@ FROM golang:latest
 LABEL maintainer="Kravchenko Dmytro E. <kravchenko.d@newton.life>"
 WORKDIR $GOPATH/src/up-client
 
-COPY . .
+COPY *.go ./
 
 RUN go get -d -v ./...
 RUN go install -v ./...
