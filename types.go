@@ -2,6 +2,17 @@
 package main
 
 import "net"
+import "time"
+
+
+type Updater struct {
+
+	Link				net.Conn
+	Error				string
+	LastAccess	time.Time
+	Parent			*Application
+
+}
 
 type Application struct {
 
@@ -9,24 +20,25 @@ type Application struct {
 	Modules					int
 	Request					Greeting
 	SupportedModules		map[string]Module
+	Updater					*Updater
 
 }
 
 type Config struct {
 
 	ServerFQDN		string
+	UpdateServer	string
+	UpdatePort		int
 	ServerPort		int
 	LogFile        string
-	Application		*Application
+	Parent				*Application
+	Services			[]Service
 	
 }
 type Service struct {
-	ServiceName			string
-	ServiceNetwork		bool
-	ServiceLocation	string
-	ServiceEnabled		bool
-	ServicePort			int
-	ServiceProto		string
+	Name			string
+	IsNetworkService		bool
+	ServicePorts		[]int
 }
 
 type Greeting struct {

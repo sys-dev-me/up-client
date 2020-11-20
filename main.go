@@ -10,65 +10,75 @@ import "strconv"
 import "strings"
 import "time"
 
-import "github.com/jasonlvhit/gocron"
+//import "github.com/jasonlvhit/gocron"
 
 func main () {
 
-	selfCheck()
-	gocron.Every(1).Minutes().Do(selfCheck)
+/*
+	app := new(Application)
+
+	app.Init()
+	go app.Updater.Connect()
+	app.selfCheck()
+	gocron.Every(1).Minutes().Do(app.selfCheck)
 	<-gocron.Start()
+*/
+
+	ps := new(PS)
+	ps.Gathering()
 
 }
 
-func selfCheck () {
+func (this *Application) selfCheck () {
 
-	ver := 1.1
+	ver := 3.0
 
   // get hostname
   hostname, _ := os.Hostname()
 	hostAddress := os.Getenv( "DOCKER_HOST" )
   
-  //create application environment
-  app := new( Application )
-  
-  app.Config.Load( app )
-  
-  logFile, err := os.OpenFile(app.Config.getLogFileName(), os.O_RDWR | os.O_CREATE | os.O_APPEND, 0666)
+  logFile, err := os.OpenFile(this.Config.getLogFileName(), os.O_RDWR | os.O_CREATE | os.O_APPEND, 0666)
   
   if err != nil {
     fmt.Printf ( "Something went wrong: %v\n", err )
     os.Exit ( 1 )
   }
+
   defer logFile.Close()
+
   log.SetOutput ( logFile )
   
-  app.Request.HostName = hostname
-	app.Request.HostGateway = os.Getenv ( "GATEWAY" )
+	this.Request = *new(Greeting)
+  this.Request.HostName = hostname
+	this.Request.HostGateway = os.Getenv ( "GATEWAY" )
   
-  connector, err := net.Dial("tcp", strings.Join ([]string{app.Config.ServerFQDN, strconv.Itoa(app.Config.ServerPort) }, ":" ) )
+  connector, err := net.Dial("tcp", strings.Join ([]string{this.Config.ServerFQDN, strconv.Itoa(this.Config.ServerPort) }, ":" ) )
+
   if err != nil {
     fmt.Printf ( "Unable to connect to server: %v\n", err )
   }
+
   defer connector.Close()
   
-  log.Println ( "Connected to: ", strings.Join ([]string{app.Config.ServerFQDN, strconv.Itoa(app.Config.ServerPort) }, ":" ))
+  log.Println ( "Connected to: ", strings.Join ([]string{this.Config.ServerFQDN, strconv.Itoa( this.Config.ServerPort ) }, ":" ))
 
 	t := time.Now()
-  app.Request.ContainerAddress = connector.LocalAddr().(*net.TCPAddr)
-	app.Request.HostAddress = hostAddress
-	app.Request.Version = ver
-	app.Request.Received = t.Unix()
-  app.Request.HostToken = make([]byte, 5, 5)
-  app.Request.MessageType = "Some type of mesage"
-  app.Request.Message = new(Message)
-  app.Request.Message.Body = "Some specific message from client side"
-	app.Request.Memory = *ReadMemory()
-  log.Printf ( "Connect from interface: %v\n", app.Request.ContainerAddress.IP )
-	log.Printf ( "Host address: %v\n", app.Request.HostAddress )
-	log.Printf ( "Data: %+v\n", app.Request )
+  this.Request.ContainerAddress = connector.LocalAddr().(*net.TCPAddr)
+	this.Request.HostAddress = hostAddress
+	this.Request.Version = ver
+	this.Request.Received = t.Unix()
+  this.Request.HostToken = make([]byte, 5, 5)
+  this.Request.MessageType = "check-in"
+  this.Request.Message = new(Message)
+  this.Request.Message.Body = "Some specific message from client side"
+	this.Request.Memory = *ReadMemory()
+
+  log.Printf ( "Connect from interface: %v\n", this.Request.ContainerAddress.IP )
+	log.Printf ( "Host address: %v\n", this.Request.HostAddress )
+	log.Printf ( "Data: %+v\n", this.Request )
   
   // write json to connector
-  jsonBytes, err := json.Marshal( app.Request )
+  jsonBytes, err := json.Marshal( this.Request )
   _, err = connector.Write( jsonBytes )
   
 	

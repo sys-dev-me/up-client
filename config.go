@@ -5,9 +5,7 @@ import "encoding/json"
 //import "path/filepath"
 import "fmt"
 
-func (this *Config) Load( app *Application ) *Config {
-
-	this.Application = app
+func (this *Config) Load() *Config {
 
 	if len ( os.Args ) < 2 { 
 		fmt.Printf ( "Usage: up-client PATH_TO/CONFIGURATION_FILE\n" )
