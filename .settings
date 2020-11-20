@@ -1,5 +1,14 @@
 {
-	"ServerFQDN":"probe.newton.life",
-	"ServerPort":3333,
-	"LogFile": "client.log"
+	"ServerFQDN":"SERVER_HOST",
+	"ServerPort":SERVER_PORT,
+	"UpdateServer":"UPDATE_SERVER_HOST",
+	"UpdatePort":UPDATE_SERVER_PORT,
+	"LogFile": "LOG_FILE",
+	"Services":[
+		{
+			"Name":"nginx",
+			"IsNetworkService":true,
+			"ServicePorts":[80]
+		}
+	]
 }
